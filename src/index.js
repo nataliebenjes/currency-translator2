@@ -19,7 +19,13 @@ function getTranslation(currency, amount) {
 // UI Logic
 
 function printElements(getRate, currency, amount) {
-  document.querySelector('#showResponse').innerText = `${amount} USD is ${getRate} in ${amount}`;
+
+  getRate.conversion_rates.currency.forEach(function (key) {
+    if (key === currency) {
+      const rate = obj[currency];
+    }
+  })
+  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${rate} in ${amount}`;
 }
 
 function printError(error) {
