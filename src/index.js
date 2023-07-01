@@ -4,22 +4,22 @@ import TranslateService from './translator.js';
 
 // Business Logic
 
-function getTranslation(phrase, amount) {
-  console.log(phrase);
-  let promise = TranslateService.getTranslation(phrase);
+function getTranslation(currency, amount) {
+  console.log(currency);
+  let promise = TranslateService.getTranslation(currency);
   console.log()
-  promise.then(function (response.conversion_rates) {
-
-    printElements(response.conversion_rates.USD);
-  }, function (conversion_rates) {
-    printError(conversion_rates.USD);
+  promise.then(function (getRate) {
+    console.log(getRate);
+    printElements(getRate, currency, amount);
+  }, function (errorArray) {
+    printError(errorArray);
   });
 }
 
 // UI Logic
 
-function printElements(translation) {
-  document.querySelector('#showResponse').innerText = `Your translated phrase is ${translation}`;
+function printElements(getRate, currency, amount) {
+  document.querySelector('#showResponse').innerText = `${amount} USD is ${getRate} in ${amount}`;
 }
 
 function printError(error) {
@@ -28,9 +28,9 @@ function printError(error) {
 
 function handleFormSubmission(event) {
   event.preventDefault();
-  const phrase = document.querySelector('#entry').value;
-  const amount = parseInt(document.querySelector("#amount").value);
-  getTranslation(phrase, amount);
+  const currency = document.querySelector('#entry').value;
+  const amount = parseInt(document.querySelector("#quantity").value);
+  getTranslation(currency, amount);
 }
 
 window.addEventListener("load", function () {
