@@ -31,26 +31,14 @@ function printElements(response, currency, amount) {
   }
 }
 
-
-function printError(response) {
-  console.log("helooooo???")
-  console.log(response.status);
-  document.querySelector('#showResponse').innerText = `ERROR!!!`
+//this currently runs if status is undefined, but not for this.status=403
+function printError(error) {
+  console.log(error.status);
+  document.querySelector('#error-message').innerText = `There was an error accessing the currency conversion data`;
+  console.log("help me save me");
+  document.querySelector('#error-message').innerText = `${error}: ${error.status} ${error.statusText}: ${error.message}`;
 }
-// function printError(response) {
-//   console.log(response['error-type']);
-//   showErrorMessage('An error occurred: ' + response.status);
-// }
 
-// function showErrorMessage(message) {
-//   const errorElement = document.getElementById('error-message');
-//   if (errorElement) {
-//     errorElement.textContent = message;
-//   } else {
-//     console.error('Error element not found in the DOM.');
-//     console.error(message);
-//   }
-// }
 
 function handleFormSubmission(event) {
   event.preventDefault();
