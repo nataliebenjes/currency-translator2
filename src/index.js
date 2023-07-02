@@ -7,10 +7,10 @@ import TranslateService from './translator.js';
 function getTranslation(currency, amount) {
   console.log(currency);
   let promise = TranslateService.getTranslation(currency);
-  console.log()
-  promise.then(function (getRate) {
-    console.log(getRate);
-    printElements(getRate, currency, amount);
+  console.log();
+  promise.then(function (response) {
+    console.log(response);
+    printElements(response, currency, amount);
   }, function (errorArray) {
     printError(errorArray);
   });
@@ -18,14 +18,11 @@ function getTranslation(currency, amount) {
 
 // UI Logic
 
-function printElements(getRate, currency, amount) {
-
-  getRate.conversion_rates.currency.forEach(function (key) {
-    if (key === currency) {
-      const rate = obj[currency];
-    }
-  })
-  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${rate} in ${amount}`;
+function printElements(response, currency, amount) {
+  console.log(response[0].conversion_rate);
+  const rate = response[0].conversion_rate;
+  console.log(rate);
+  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${rate * amount} in ${currency}`;
 }
 
 function printError(error) {
