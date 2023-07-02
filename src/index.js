@@ -9,23 +9,28 @@ function getTranslation(currency, amount) {
   promise.then(function (response) {
     console.log(response);
     printElements(response, currency, amount);
-  }, function (response) {
-    printError(response);
+  }, function (errorMessage) {
+    printError(errorMessage);
   });
 }
 
 // UI Logic
 
 function printElements(response, currency, amount) {
-  console.log(response[0].conversion_rate);
-  const rate = response[0].conversion_rate;
-  const number = rate * amount;
-  const formattedNumber = new Intl.NumberFormat('de-DE', { style: 'currency', currency: `${currency}` }).format(number);
-  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${formattedNumber}`;
+  if (isNaN(amount)) {
+    document.querySelector('#showResponse').innerText = "Please enter a number"
+  } else {
+    const rate = response[0].conversion_rate;
+    const number = rate * amount;
+    const formattedNumber = new Intl.NumberFormat('de-DE', { style: 'currency', currency: `${currency}` }).format(number);
+    document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${formattedNumber}`;
+  }
 }
 
 function printError(response) {
-  document.querySelector('#showResponse').innerText = `${response.error.message}`
+  console.log(response['error-type']);
+  const errorElement = document.getElementById('error-message');
+  errorElement.textContent = 'An error occurred: ' + response.result;
 }
 
 function handleFormSubmission(event) {
