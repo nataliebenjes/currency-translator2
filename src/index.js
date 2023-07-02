@@ -5,14 +5,12 @@ import TranslateService from './translator.js';
 // Business Logic
 
 function getTranslation(currency, amount) {
-  console.log(currency);
   let promise = TranslateService.getTranslation(currency);
-  console.log();
   promise.then(function (response) {
     console.log(response);
     printElements(response, currency, amount);
-  }, function (errorArray) {
-    printError(errorArray);
+  }, function (response) {
+    printError(response);
   });
 }
 
@@ -21,12 +19,13 @@ function getTranslation(currency, amount) {
 function printElements(response, currency, amount) {
   console.log(response[0].conversion_rate);
   const rate = response[0].conversion_rate;
-  console.log(rate);
-  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${rate * amount} in ${currency}`;
+  const number = rate * amount;
+  const formattedNumber = new Intl.NumberFormat('de-DE', { style: 'currency', currency: `${currency}` }).format(number);
+  document.querySelector('#showResponse').innerText = `$ ${amount} USD is ${formattedNumber}`;
 }
 
-function printError(error) {
-  document.querySelector('#showResponse').innerText = `${error}`
+function printError(response) {
+  document.querySelector('#showResponse').innerText = `${response.error.message}`
 }
 
 function handleFormSubmission(event) {
