@@ -9,7 +9,7 @@ function getTranslation(currency, amount) {
   promise.then(function (response) {
     console.log(response);
     printElements(response, currency, amount);
-  }, function (errorMessage) {
+  }).catch(function (errorMessage) {
     printError(errorMessage);
   });
 }
@@ -27,10 +27,24 @@ function printElements(response, currency, amount) {
   }
 }
 
+// function printError(response) {
+//   console.log(response['error-type']);
+//   const errorElement = document.getElementById('error-message');
+//   errorElement.textContent = 'An error occurred: ' + response.result;
+// }
 function printError(response) {
   console.log(response['error-type']);
+  showErrorMessage('An error occurred: ' + response.result);
+}
+
+function showErrorMessage(message) {
   const errorElement = document.getElementById('error-message');
-  errorElement.textContent = 'An error occurred: ' + response.result;
+  if (errorElement) {
+    errorElement.textContent = message;
+  } else {
+    console.error('Error element not found in the DOM.');
+    console.error(message);
+  }
 }
 
 function handleFormSubmission(event) {
