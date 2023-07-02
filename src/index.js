@@ -9,9 +9,12 @@ function getTranslation(currency, amount) {
   promise.then(function (response) {
     console.log(response);
     printElements(response, currency, amount);
-  }).catch(function (errorMessage) {
+  }, function (errorMessage) {
     printError(errorMessage);
-  });
+    //printError function isn't being called
+    console.log("see me??")
+  }
+  );
 }
 
 // UI Logic
@@ -27,25 +30,26 @@ function printElements(response, currency, amount) {
   }
 }
 
+function printError(response) {
+  console.log("helooooo???")
+  console.log(response.status);
+  const errorElement = document.getElementById('error-message');
+  errorElement.textContent = 'An error occurred: ' + response[0].status;
+}
 // function printError(response) {
 //   console.log(response['error-type']);
-//   const errorElement = document.getElementById('error-message');
-//   errorElement.textContent = 'An error occurred: ' + response.result;
+//   showErrorMessage('An error occurred: ' + response.status);
 // }
-function printError(response) {
-  console.log(response['error-type']);
-  showErrorMessage('An error occurred: ' + response.result);
-}
 
-function showErrorMessage(message) {
-  const errorElement = document.getElementById('error-message');
-  if (errorElement) {
-    errorElement.textContent = message;
-  } else {
-    console.error('Error element not found in the DOM.');
-    console.error(message);
-  }
-}
+// function showErrorMessage(message) {
+//   const errorElement = document.getElementById('error-message');
+//   if (errorElement) {
+//     errorElement.textContent = message;
+//   } else {
+//     console.error('Error element not found in the DOM.');
+//     console.error(message);
+//   }
+// }
 
 function handleFormSubmission(event) {
   event.preventDefault();
