@@ -17,6 +17,7 @@ function getTranslation(currency, amount) {
   );
 }
 
+
 // UI Logic
 
 function printElements(response, currency, amount) {
@@ -30,11 +31,11 @@ function printElements(response, currency, amount) {
   }
 }
 
+
 function printError(response) {
   console.log("helooooo???")
   console.log(response.status);
-  const errorElement = document.getElementById('error-message');
-  errorElement.textContent = 'An error occurred: ' + response[0].status;
+  document.querySelector('#showResponse').innerText = `ERROR!!!`
 }
 // function printError(response) {
 //   console.log(response['error-type']);
