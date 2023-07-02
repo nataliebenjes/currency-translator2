@@ -5,24 +5,21 @@ import TranslateService from './translator.js';
 // Business Logic
 
 function getTranslation(currency, amount) {
-  let promise = TranslateService.getTranslation(currency);
-  promise.then(function (response) {
-    console.log(response);
-    printElements(response, currency, amount);
-  }, function (errorMessage) {
-    printError(errorMessage);
-    //printError function isn't being called
-    console.log("see me??")
-  }
-  );
+  TranslateService.getTranslation()
+    .then(function (response) {
+      if (response.conversion_rates) {
+        printElements(response, currency, amount);
+      } else {
+        printError(response);
+      }
+    });
 }
-
 
 // UI Logic
 
 function printElements(response, currency, amount) {
   if (isNaN(amount)) {
-    document.querySelector('#showResponse').innerText = "Please enter a number"
+    document.querySelector('#showResponse').innerText = "Please enter a number";
   } else {
     const rate = response[0].conversion_rate;
     const number = rate * amount;
@@ -31,11 +28,9 @@ function printElements(response, currency, amount) {
   }
 }
 
-//this currently runs if status is undefined, but not for this.status=403
+
 function printError(error) {
-  console.log(error.status);
   document.querySelector('#error-message').innerText = `There was an error accessing the currency conversion data`;
-  console.log("help me save me");
   document.querySelector('#error-message').innerText = `${error}: ${error.status} ${error.statusText}: ${error.message}`;
 }
 

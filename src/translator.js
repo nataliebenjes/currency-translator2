@@ -1,24 +1,16 @@
-//setup service section of code
 export default class TranslateService {
-  //method that returns promise object
   static getTranslation(currency) {
-    return new Promise(function (resolve, reject) {
-      let request = new XMLHttpRequest();
-      const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/pair/USD/${currency}`;
-      request.addEventListener("loadend", function () {
-        console.log(this.status);
-        const response = JSON.parse(this.responseText);
-        if (this.status === 200) {
-          resolve([response, currency]);
+    return fetch(`https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/pair/USD/${currency}`)
+      .then(function (response) {
+        if (!response.ok) {
+          const errorMessage = `${response.status} ${response.statusText}`;
+          throw new Error(errorMessage);
         } else {
-          reject([this, response, currency]);
+          return response.json();
         }
+      })
+      .catch(function (error) {
+        return error;
       });
-      request.addEventListener("error", function () {
-        reject(new Error("Failed to make the request. Please try again later."));
-      });
-      request.open("GET", url, true);
-      request.send();
-    });
   }
 }
